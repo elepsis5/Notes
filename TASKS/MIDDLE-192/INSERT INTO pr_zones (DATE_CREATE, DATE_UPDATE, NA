@@ -1,0 +1,125 @@
+INSERT INTO pr_zones (DATE_CREATE, DATE_UPDATE, NAME, CODE_1C) VALUES (DEFAULT, DEFAULT, 'Соединённые штаты Америки ', 'usa');
+INSERT INTO or_sales_types (DATE_CREATE, DATE_UPDATE, NAME, ACTIVE) VALUES (DEFAULT, DEFAULT, 'Соединённые штаты Америки', DEFAULT);
+INSERT INTO dl_sales_type_zone (DATE_CREATE, DATE_UPDATE, ACTIVE, ZONE_ID, SALE_TYPE_ID) VALUES (DEFAULT, DEFAULT, DEFAULT, 6, 32);
+INSERT INTO dl_regions (DATE_CREATE, DATE_UPDATE, ACTIVE, NAME) VALUES (DEFAULT, DEFAULT, DEFAULT, 'Соединённые штаты Америки');
+INSERT INTO dl_macroregions (DATE_CREATE, DATE_UPDATE, ACTIVE, CODE_1C, REGION_ID, NAME) VALUES (DEFAULT, DEFAULT, DEFAULT, null, 1052, 'Соединённые штаты Америки');
+INSERT INTO pr_price_list (DATE_CREATE, DATE_UPDATE, NAME, CODE, TYPE, RELATE_TO_RUB) VALUES (DEFAULT, DEFAULT, 'USA Gross price', 'ugp', 'BASE', 26);
+INSERT INTO pr_price_list (DATE_CREATE, DATE_UPDATE, NAME, CODE, TYPE, RELATE_TO_RUB) VALUES (DEFAULT, DEFAULT, 'USA Gross price в рублях', 'ugprub', 'RUB', null);
+
+INSERT INTO pr_stocks_assigne (FEDERAL_REGION_ID, STOCK_ID) values  (4918, 999999),
+                                                                    (3774, 999999),
+                                                                    (3773, 999999),
+                                                                    (3772, 999999),
+                                                                    (3771, 999999),
+                                                                    (3770, 999999),
+                                                                    (3769, 999999),
+                                                                    (3768, 999999),
+                                                                    (3767, 999999),
+                                                                    (3766, 999999),
+                                                                    (3765, 999999),
+                                                                    (3764, 999999),
+                                                                    (3763, 999999),
+                                                                    (3762, 999999),
+                                                                    (3761, 999999),
+                                                                    (3760, 999999),
+                                                                    (3759, 999999),
+                                                                    (3758, 999999),
+                                                                    (3757, 999999),
+                                                                    (3756, 999999),
+                                                                    (3755, 999999),
+                                                                    (3754, 999999),
+                                                                    (3753, 999999),
+                                                                    (3752, 999999),
+                                                                    (3751, 999999),
+                                                                    (3750, 999999),
+                                                                    (3749, 999999),
+                                                                    (3748, 999999),
+                                                                    (3747, 999999),
+                                                                    (3746, 999999),
+                                                                    (3745, 999999),
+                                                                    (3744, 999999),
+                                                                    (3743, 999999),
+                                                                    (3742, 999999),
+                                                                    (3741, 999999),
+                                                                    (3740, 999999),
+                                                                    (3739, 999999),
+                                                                    (3738, 999999),
+                                                                    (3737, 999999),
+                                                                    (3736, 999999),
+                                                                    (3735, 999999),
+                                                                    (3734, 999999),
+                                                                    (3733, 999999),
+                                                                    (3732, 999999),
+                                                                    (3731, 999999),
+                                                                    (3730, 999999),
+                                                                    (3729, 999999),
+                                                                    (3728, 999999),
+                                                                    (3727, 999999),
+                                                                    (3726, 999999),
+                                                                    (3725, 999999),
+                                                                    (3724, 999999),
+                                                                    (3192, 999999),
+                                                                    (1398, 999999),
+                                                                    (1116, 999999),
+                                                                    (1105, 999999),
+                                                                    (368, 999999);
+                                                                    
+UPDATE dl_countries SET ZONE_ID = 6 WHERE ID = 149;
+
+UPDATE dl_federal_regions SET REGION_ID = 1052, MACROREGION_ID = 99 WHERE ID = 3753;
+UPDATE dl_federal_regions SET REGION_ID = 1052, MACROREGION_ID = 99 WHERE ID = 3752;
+UPDATE dl_federal_regions SET REGION_ID = 1052, MACROREGION_ID = 99 WHERE ID = 3755;
+UPDATE dl_federal_regions SET REGION_ID = 1052, MACROREGION_ID = 99 WHERE ID = 3754;
+UPDATE dl_federal_regions SET REGION_ID = 1052, MACROREGION_ID = 99 WHERE ID = 3757;
+UPDATE dl_federal_regions SET REGION_ID = 1052, MACROREGION_ID = 99 WHERE ID = 3756;
+UPDATE dl_federal_regions SET REGION_ID = 1052, MACROREGION_ID = 99 WHERE ID = 3759;
+UPDATE dl_federal_regions SET REGION_ID = 1052, MACROREGION_ID = 99 WHERE ID = 3758;
+UPDATE dl_federal_regions SET REGION_ID = 1052, MACROREGION_ID = 99 WHERE ID = 3761;
+UPDATE dl_federal_regions SET REGION_ID = 1052, MACROREGION_ID = 99 WHERE ID = 3760;
+UPDATE dl_federal_regions SET REGION_ID = 1052, MACROREGION_ID = 99 WHERE ID = 3763;
+UPDATE dl_federal_regions SET REGION_ID = 1052, MACROREGION_ID = 99 WHERE ID = 3762;
+UPDATE dl_federal_regions SET REGION_ID = 1052, MACROREGION_ID = 99 WHERE ID = 3765;
+UPDATE dl_federal_regions SET REGION_ID = 1052, MACROREGION_ID = 99 WHERE ID = 3764;
+UPDATE dl_federal_regions SET REGION_ID = 1052, MACROREGION_ID = 99 WHERE ID = 3767;
+UPDATE dl_federal_regions SET REGION_ID = 1052, MACROREGION_ID = 99 WHERE ID = 3766;
+UPDATE dl_federal_regions SET REGION_ID = 1052, MACROREGION_ID = 99 WHERE ID = 3769;
+UPDATE dl_federal_regions SET REGION_ID = 1052, MACROREGION_ID = 99 WHERE ID = 3768;
+UPDATE dl_federal_regions SET REGION_ID = 1052, MACROREGION_ID = 99 WHERE ID = 3771;
+UPDATE dl_federal_regions SET REGION_ID = 1052, MACROREGION_ID = 99 WHERE ID = 3770;
+UPDATE dl_federal_regions SET REGION_ID = 1052, MACROREGION_ID = 99 WHERE ID = 3773;
+UPDATE dl_federal_regions SET REGION_ID = 1052, MACROREGION_ID = 99 WHERE ID = 3772;
+UPDATE dl_federal_regions SET REGION_ID = 1052, MACROREGION_ID = 99 WHERE ID = 3774;
+UPDATE dl_federal_regions SET REGION_ID = 1052, MACROREGION_ID = 99 WHERE ID = 1116;
+UPDATE dl_federal_regions SET REGION_ID = 1052, MACROREGION_ID = 99 WHERE ID = 1398;
+UPDATE dl_federal_regions SET REGION_ID = 1052, MACROREGION_ID = 99 WHERE ID = 3725;
+UPDATE dl_federal_regions SET REGION_ID = 1052, MACROREGION_ID = 99 WHERE ID = 3724;
+UPDATE dl_federal_regions SET REGION_ID = 1052, MACROREGION_ID = 99 WHERE ID = 3727;
+UPDATE dl_federal_regions SET REGION_ID = 1052, MACROREGION_ID = 99 WHERE ID = 3726;
+UPDATE dl_federal_regions SET REGION_ID = 1052, MACROREGION_ID = 99 WHERE ID = 3729;
+UPDATE dl_federal_regions SET REGION_ID = 1052, MACROREGION_ID = 99 WHERE ID = 3728;
+UPDATE dl_federal_regions SET REGION_ID = 1052, MACROREGION_ID = 99 WHERE ID = 3731;
+UPDATE dl_federal_regions SET REGION_ID = 1052, MACROREGION_ID = 99 WHERE ID = 3730;
+UPDATE dl_federal_regions SET REGION_ID = 1052, MACROREGION_ID = 99 WHERE ID = 3733;
+UPDATE dl_federal_regions SET REGION_ID = 1052, MACROREGION_ID = 99 WHERE ID = 4918;
+UPDATE dl_federal_regions SET REGION_ID = 1052, MACROREGION_ID = 99 WHERE ID = 3735;
+UPDATE dl_federal_regions SET REGION_ID = 1052, MACROREGION_ID = 99 WHERE ID = 3734;
+UPDATE dl_federal_regions SET REGION_ID = 1052, MACROREGION_ID = 99 WHERE ID = 3737;
+UPDATE dl_federal_regions SET REGION_ID = 1052, MACROREGION_ID = 99 WHERE ID = 3736;
+UPDATE dl_federal_regions SET REGION_ID = 1052, MACROREGION_ID = 99 WHERE ID = 3739;
+UPDATE dl_federal_regions SET REGION_ID = 1052, MACROREGION_ID = 99 WHERE ID = 3738;
+UPDATE dl_federal_regions SET REGION_ID = 1052, MACROREGION_ID = 99 WHERE ID = 3741;
+UPDATE dl_federal_regions SET REGION_ID = 1052, MACROREGION_ID = 99 WHERE ID = 3740;
+UPDATE dl_federal_regions SET REGION_ID = 1052, MACROREGION_ID = 99 WHERE ID = 3743;
+UPDATE dl_federal_regions SET REGION_ID = 1052, MACROREGION_ID = 99 WHERE ID = 3742;
+UPDATE dl_federal_regions SET REGION_ID = 1052, MACROREGION_ID = 99 WHERE ID = 1105;
+UPDATE dl_federal_regions SET REGION_ID = 1052, MACROREGION_ID = 99 WHERE ID = 368;
+UPDATE dl_federal_regions SET REGION_ID = 1052, MACROREGION_ID = 99 WHERE ID = 3732;
+UPDATE dl_federal_regions SET REGION_ID = 1052, MACROREGION_ID = 99 WHERE ID = 3192;
+UPDATE dl_federal_regions SET REGION_ID = 1052, MACROREGION_ID = 99 WHERE ID = 3745;
+UPDATE dl_federal_regions SET REGION_ID = 1052, MACROREGION_ID = 99 WHERE ID = 3744;
+UPDATE dl_federal_regions SET REGION_ID = 1052, MACROREGION_ID = 99 WHERE ID = 3747;
+UPDATE dl_federal_regions SET REGION_ID = 1052, MACROREGION_ID = 99 WHERE ID = 3746;
+UPDATE dl_federal_regions SET REGION_ID = 1052, MACROREGION_ID = 99 WHERE ID = 3749;
+UPDATE dl_federal_regions SET REGION_ID = 1052, MACROREGION_ID = 99 WHERE ID = 3748;
+UPDATE dl_federal_regions SET REGION_ID = 1052, MACROREGION_ID = 99 WHERE ID = 3751;
+UPDATE dl_federal_regions SET REGION_ID = 1052, MACROREGION_ID = 99 WHERE ID = 3750;

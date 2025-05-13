@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8"/><style>
+table {border: medium solid #6495ed;border-collapse: collapse;width: 100%;} th{font-family: monospace;border: thin solid #6495ed;padding: 5px;background-color: #D0E3FA;}th{text-align: left;}td{font-family: sans-serif;border: thin solid #6495ed;padding: 5px;text-align: center;}.odd{background:#e8edff;}img{padding:5px; border:solid; border-color: #dddddd #aaaaaa #aaaaaa #dddddd; border-width: 1px 2px 2px 1px; background-color:white;}</style>
+</head>
+<body>
+<table><tr><th colspan="6"><pre><code>SELECT `translate`.`ID`, `translate`.`TABLE`, `translate`.`FIELD`, `translate`.`VALUE`, `translate`.`ROW_ID`,<br>`shipment_status`.`NAME`<br>FROM `translate`<br>inner JOIN `shipment_status` ON translate.ROW_ID = shipment_status.ID<br>WHERE `translate`.`TABLE` = 'shipment_status'<br>AND `translate`.`LANG` = 5</code></pre></th></tr><tr><th>ID</th><th>TABLE</th><th>FIELD</th><th>VALUE</th><th>ROW_ID</th><th>NAME</th></tr><tr class="odd"><td>1 053 068</td><td>shipment_status</td><td>CODE</td><td>Créé (non approuvé)</td><td>1</td><td>created</td></tr>
+<tr><td>1 061 514</td><td>shipment_status</td><td>CODE</td><td>Créé (non approuvé)</td><td>1</td><td>created</td></tr>
+<tr class="odd"><td>1 053 069</td><td>shipment_status</td><td>CODE</td><td>Approuvé. Traitement des informations pour le transfert à l'entrepôt</td><td>2</td><td>success</td></tr>
+<tr><td>1 061 515</td><td>shipment_status</td><td>CODE</td><td>Approuvé. Traitement des informations pour le transfert à l'entrepôt</td><td>2</td><td>success</td></tr>
+<tr class="odd"><td>1 053 070</td><td>shipment_status</td><td>CODE</td><td>Informations transférées à l'entrepôt. L'envoi se prépare pour être récupéré. En attente du ramassage à l'entrepôt à l'arrivée</td><td>3</td><td>prepare</td></tr>
+<tr><td>1 061 516</td><td>shipment_status</td><td>CODE</td><td>Informations transférées à l'entrepôt. L'envoi se prépare pour la cueillette. Attendra le ramassage à l'entrepôt à l'arrivée</td><td>3</td><td>prepare</td></tr>
+<tr class="odd"><td>1 053 071</td><td>shipment_status</td><td>CODE</td><td>Expédié</td><td>4</td><td>closed</td></tr>
+<tr><td>1 061 517</td><td>shipment_status</td><td>CODE</td><td>Expédié</td><td>4</td><td>closed</td></tr>
+<tr class="odd"><td>1 053 072</td><td>shipment_status</td><td>CODE</td><td>Annulé</td><td>5</td><td>сanceled</td></tr>
+<tr><td>1 061 518</td><td>shipment_status</td><td>CODE</td><td>Annulé</td><td>5</td><td>сanceled</td></tr>
+<tr class="odd"><td>1 053 073</td><td>shipment_status</td><td>CODE</td><td>Demande acceptée en ligne. Traitement des informations à envoyer au système comptable</td><td>6</td><td>new</td></tr>
+<tr><td>1 061 519</td><td>shipment_status</td><td>CODE</td><td>Candidature acceptée en ligne. Traitement des informations à envoyer au système comptable</td><td>6</td><td>new</td></tr>
+<tr class="odd"><td>1 053 074</td><td>shipment_status</td><td>CODE</td><td>Envoyé au système comptable</td><td>7</td><td>sendto1c</td></tr>
+<tr><td>1 061 520</td><td>shipment_status</td><td>CODE</td><td>Envoyé au système comptable</td><td>7</td><td>sendto1c</td></tr>
+</table></body></html>

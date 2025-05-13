@@ -1,0 +1,1 @@
+INSERT INTO us_permissions (DATE_CREATE, DATE_UPDATE, ACTIVE, NAME, GROUP_ID) VALUES (DEFAULT, DEFAULT, DEFAULT, 'view_menu__supplier_sales_settings', 10);

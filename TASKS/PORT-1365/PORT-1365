@@ -1,0 +1,9 @@
+PORT-1365
+
+В app/Classes/Feedback/Webform.php строка 166 поиск модели FederalRegion осуществляется при условии наличия ключа "federal_region_id", не учитывая соделжимое $values["federal_region_id"].
+
+Сначала через array_see() получаем содержимое values["federal_region_id"] и результат добавляем в условие на поиск FederalRegion, заменяя выражение array_key_exists("federal_region_id", $values).
+
+Тестирование:
+
+Заходим под этим пользователем. Создаем обращение.

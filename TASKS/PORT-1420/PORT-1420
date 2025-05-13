@@ -1,0 +1,36 @@
+PORT-1420
+
+Бэк. 
+	PORTAL - 2 часа.
+		заводим новый тип обращения данных получателя 'SHIPMENT_RECIPIENT':
+			`INSERT INTO webform_types (CODE,NAME) 
+							VALUES ('SHIPMENT_RECIPIENT','Данные получателя')`;
+			`INSERT INTO webform_fields (TYPE_ID,NAME)
+							VALUES (20,'SHIPMENT_GROUP_ID')`;
+			`INSERT INTO webform_fields (TYPE_ID,NAME)
+							VALUES (20,'RECIPIENT_CAR')`;
+			`INSERT INTO webform_fields (TYPE_ID,NAME)
+							VALUES (20,'RECIPIENT_DOC_SERIES')`;
+			`INSERT INTO webform_fields (TYPE_ID,NAME)
+							VALUES (20,'RECIPIENT_DOC_TYPE')`;
+			`INSERT INTO webform_fields (TYPE_ID,NAME)
+							VALUES (20,'RECIPIENT_NAME')`;
+
+		заводим новый тип обращения новой доверенности 'POWER_OF_ATTORNEY':
+			`INSERT INTO webform_types (CODE,NAME) 
+							VALUES ('POWER_OF_ATTORNEY','Доверенность на юр. лицо')`;
+			`INSERT INTO webform_fields (TYPE_ID,NAME)
+							VALUES (21,'file')`;
+
+
+		В контроллере app/Http/Controllers/OrderController:
+			создаем метод отправки обращений менеджеру по аналогии с app/Http/Controllers/WebformController:submit();
+			в методе shipment_confirm():
+			 - после оформления зно и отправки данных на API и при ответе с API со статусом 200 инициируем создание и отправку обращения нового типа 'SHIPMENT_RECIPIENT'.
+
+Фронт. - 2 часа
+	В public/common/js/order/shipment.js:
+	 - упаковываем данные получателя в send_data под ключом 'shipment_recipient'.
+	 - при загрузке пользователем новой доверенности блокировать возможность дальнейшего оформления ЗНО и выводить сообщение: 
+
+Итого 4 часа + 1 час на риски.

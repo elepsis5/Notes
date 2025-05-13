@@ -1,0 +1,57 @@
+@extends('hurakan_hk.layouts.master', ['section_class_list' => 'contact-us'])
+
+@section('content')
+<div class="container">
+    <div class="contact-head">
+        <div class="row">
+            <div class="col-lg-8 col-12">
+                {{-- <div class="mt-5">
+                    <a href="javascript:;"
+                    class="count-buy-btn button_modal_init"
+                    data-type="" type="button">{{ __('translate.BECOME_A_DEALER') }}</a>
+                </div> --}}
+                <button 
+                class="count-buy-btn button_modal_init"
+                {{-- data-src="#feedback_form_modal" --}}
+                >Launch Dialog</button>
+
+                 {{-- ФОРМА  --}}
+                <div class="form-main c_form__main_container">
+                    <div class="title">
+                        <h4>Get in touch</h4>
+                        <h3>Write us a message</h3>
+                    </div>
+                    @include('hurakan_hk.layouts.parts.feedback_form')
+                </div>
+                 {{-- ------  --}}
+            </div>
+            <div class="col-lg-4 col-12">
+                <div class="single-head">
+                    <div class="single-info">
+                        <i class="fal fa-phone"></i>
+                        <h4 class="title">Call us Now:</h4>
+                        <ul>
+                            <li>(+1) 123 456 5657</li>
+                            <li>(+1) 123 456 56571</li>
+                        </ul>
+                    </div>
+                    <div class="single-info">
+                        <i class="fal fa-envelope"></i>
+                        <h4 class="title">Email:</h4>
+                        <ul>
+                            <li><a href="mailto:info@example.com">info@example.com</a></li>
+                            <li><a href="mailto:support@example.com">support@example.com</a></li>
+                        </ul>
+                    </div>
+                    <div class="single-info">
+                        <i class="fal fa-map-marker-alt"></i>
+                        <h4 class="title">Our Address:</h4>
+                        <ul>
+                            <li>1503 Kovar Road, New York,<br> USA</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>@endsection

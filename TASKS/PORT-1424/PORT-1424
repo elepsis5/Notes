@@ -1,0 +1,18 @@
+PORT-1424
+
+Бэк. - 6 часов.
+	В контроллере ShipmentRequestsController.
+	Прописываем связи в конфигах config/compozite/shipment.php и config/compozite/shipment_appeal.php
+	Страница списка.
+		Метод shipmentsByProductList():
+			Читаем из запроса данные по каждому фильтру. Передаем их в шаблон вместе с языком, метаданными и хлебными крошками.
+		Метод apiGetShipmentsByProductList():
+			Создаем app/ModelQueries/ShipmentsByProductQuery:access() по аналогии с app/ModelQueries/ShipmentAppealQuery:access().
+ добавить ограничение на роль techdesigner.
+			Получаем коллекцию отгрузок используя модель app/Models/Shipment.php и обогащаем ее данным из ЗНО и передаем в ответе вместе с метаданными и данными фильтров.
+Фронт по аналогии с другими списками с ListController - 4 часа.
+Итого 10 часов + 2 часа на риски.
+
+добавить sql запрос на добавление поля в order_shipped
+
+

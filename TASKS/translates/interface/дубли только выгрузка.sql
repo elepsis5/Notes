@@ -1,0 +1,50 @@
+DELETE FROM `translate`WHERE `TABLE` in (
+	'shipment_status',
+	'or_order_product_status',
+	'receipts_actions',
+	'or_delivery_status',
+	'subscriptions_channels',
+	'returns_statuses',
+	'pr_brands_type'
+    ) && ID in (
+	1053068,
+	1053069,
+	1053070,
+	1053071,
+	1053072,
+	1053073,
+	1053074,
+	1053075,
+	1053076,
+	1053077,
+	1053078,
+	1053079,
+	1053080,
+	1053081,
+	1053082,
+	1053089,
+	1053090,
+	1053091,
+	1053092,
+	1053093,
+	1053094,
+	1053095,
+	1053096,
+	1053083,
+	1053084,
+	1053085,
+	1053086,
+	1053087,
+	1053088,
+	1053097,
+	1053098
+);
+
+
+DELETE FROM `translate`	WHERE `TABLE`='webform_types' && ID in (
+	1059788,
+    1059789,
+    1059790,
+    1059792,
+    1059793,
+	);

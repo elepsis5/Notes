@@ -1,0 +1,11 @@
+PORT-1280
+
+.select2-container--default .select2-selection--single .select2-selection__rendered .select2-selection__clear {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 25px;
+    height: 20px;
+    background-color: white;
+    margin: 2px 0 0 0;
+}

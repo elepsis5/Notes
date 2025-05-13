@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8"/><style>
+table {border: medium solid #6495ed;border-collapse: collapse;width: 100%;} th{font-family: monospace;border: thin solid #6495ed;padding: 5px;background-color: #D0E3FA;}th{text-align: left;}td{font-family: sans-serif;border: thin solid #6495ed;padding: 5px;text-align: center;}.odd{background:#e8edff;}img{padding:5px; border:solid; border-color: #dddddd #aaaaaa #aaaaaa #dddddd; border-width: 1px 2px 2px 1px; background-color:white;}</style>
+</head>
+<body>
+<table><tr><th colspan="6"><pre><code>SELECT `translate`.`ID`, `translate`.`TABLE`, `translate`.`FIELD`, `translate`.`VALUE`, `translate`.`ROW_ID`, COUNT(*)<br>FROM `translate`<br>GROUP BY `translate`.`TABLE`, `translate`.`FIELD`, `translate`.`ROW_ID`, `translate`.`LANG`<br>HAVING COUNT(*) &gt; 1</code></pre></th></tr><tr><th>ID</th><th>TABLE</th><th>FIELD</th><th>VALUE</th><th>ROW_ID</th><th>COUNT(*)</th></tr><tr class="odd"><td>188 583</td><td></td><td>DESCRIPTION</td><td>1550х650х200</td><td>263 533</td><td>2</td></tr>
+<tr><td>188 600</td><td></td><td>DESCRIPTION</td><td>Aluminum with non-stick coating, for all types of cookers, including induction. Maximum operating temperature 260 °C</td><td>6 046 115</td><td>3</td></tr>
+<tr class="odd"><td>188 601</td><td></td><td>DESCRIPTION</td><td>Aluminum with non-stick coating, for all types of cookers, including induction. Maximum operating temperature 260 °C, additional handle</td><td>6 046 148</td><td>2</td></tr>
+<tr><td>188 602</td><td></td><td>DESCRIPTION</td><td>Pancake pan, aluminum with non-stick coating for all types of cookers, including induction.</td><td>6 046 212</td><td>4</td></tr>
+<tr class="odd"><td>188 603</td><td></td><td>DESCRIPTION</td><td>Baking tray 60x40cm h1cm, aluminum with non-stick coating, material thickness 2mm. Professional high-quality 5-layer PTFE coating, guaranteed without PFOA. Increased abrasion resistance</td><td>6 046 665</td><td>3</td></tr>
+<tr><td>188 605</td><td></td><td>DESCRIPTION</td><td>Pizza grid baking tray d 38 cm, aluminium</td><td>6 112 345</td><td>2</td></tr>
+<tr class="odd"><td>188 585</td><td></td><td>DESCRIPTION</td><td>400x140x20</td><td>9 912 705</td><td>2</td></tr>
+<tr><td>188 586</td><td></td><td>DESCRIPTION</td><td>700x140x20</td><td>9 912 707</td><td>2</td></tr>
+<tr class="odd"><td>188 587</td><td></td><td>DESCRIPTION</td><td>800x140x20</td><td>9 912 709</td><td>2</td></tr>
+<tr><td>188 581</td><td></td><td>DESCRIPTION</td><td>Used with tanks up to 50 l. Maximum operating depth: 16.5 cm. Overheat protection. New electronic control panel. Ability to save up to 25 programs. Equipped with a clip for fastening to a vessel.</td><td>11 121 682</td><td>21</td></tr>
+<tr class="odd"><td>188 588</td><td></td><td>DESCRIPTION</td><td>Volume: 22 l. Material: stainless steel. Temperature range: from 30 to 99 °C. Static heating. New control panel</td><td>11 401 511</td><td>2</td></tr>
+<tr><td>188 589</td><td></td><td>DESCRIPTION</td><td>Volume: 25 l. Material: stainless steel. Temperature range: from 30 to 99 °C. Static heating. Discharge tap. New control panel</td><td>11 401 512</td><td>6</td></tr>
+<tr class="odd"><td>188 590</td><td></td><td>DESCRIPTION</td><td>Volume: 14 l. Material: stainless steel. Temperature range: from 30 to 99 °C. Static heating. New control panel</td><td>11 401 514</td><td>2</td></tr>
+<tr><td>188 591</td><td></td><td>DESCRIPTION</td><td>Volume: 14 l. Material: stainless steel. Temperature range: from 30 to 99 °C. Static heating. Discharge tap. New control panel</td><td>11 401 516</td><td>2</td></tr>
+<tr class="odd"><td>188 597</td><td></td><td>DESCRIPTION</td><td>Gas fired oven with single gas burner inside cooking chamber, digitally controlled, with temperature display</td><td>11 961 375</td><td>2</td></tr>
+<tr><td>188 595</td><td></td><td>DESCRIPTION</td><td>Capacity: 18l. Material: Stainless steel. Rotation speed: 1400 rpm. Knife with four blades.</td><td>12 627 390</td><td>2</td></tr>
+<tr class="odd"><td>188 596</td><td></td><td>DESCRIPTION</td><td>Capacity: 35l. Material: Stainless steel. Rotation speed: 1400 rpm. Knife with four blades.</td><td>12 627 392</td><td>2</td></tr>
+<tr><td>188 606</td><td></td><td>DESCRIPTION</td><td>Гранитно-серая</td><td>14 042 892</td><td>2</td></tr>
+<tr class="odd"><td>188 593</td><td></td><td>DESCRIPTION</td><td>Productivity: up to 60 kg/day. Ice type: granules. Water cooling. Stainless steel body. Storage container capacity: 10 kg. Electromechanical control. Refrigerant R452a. Dimensions: 450x620x680 mm</td><td>17 329 411</td><td>2</td></tr>
+<tr><td>188 610</td><td></td><td>DESCRIPTION</td><td>SPEED.Basket SMALL, Mesh Cooking Basket</td><td>18 003 866</td><td>2</td></tr>
+<tr class="odd"><td>188 611</td><td></td><td>DESCRIPTION</td><td>SPEED.Basket MEDIUM, Mesh Cooking Basket</td><td>18 003 868</td><td>2</td></tr>
+<tr><td>188 594</td><td></td><td>DESCRIPTION</td><td>Used for baking and roasting various meat, fish and vegetable dishes in professional catering kitchens.</td><td>19 538 411</td><td>2</td></tr>
+<tr class="odd"><td>188 604</td><td></td><td>DESCRIPTION</td><td>Стенки и дно перфорированные</td><td>19 543 925</td><td>2</td></tr>
+<tr><td>54 083</td><td>dl_federal_regions</td><td>NAME</td><td>Almaty city</td><td>113</td><td>2</td></tr>
+<tr class="odd"><td>24 445</td><td>file_types</td><td>NAME</td><td>Instruction</td><td>1</td><td>3</td></tr>
+<tr><td>24 446</td><td>file_types</td><td>NAME</td><td>AutoCAD</td><td>2</td><td>3</td></tr>
+<tr class="odd"><td>24 447</td><td>file_types</td><td>NAME</td><td>Detailing</td><td>3</td><td>3</td></tr>
+<tr><td>24 448</td><td>file_types</td><td>NAME</td><td>Scheme</td><td>4</td><td>3</td></tr>
+<tr class="odd"><td>24 449</td><td>file_types</td><td>NAME</td><td>Declarations</td><td>5</td><td>3</td></tr>
+<tr><td>24 450</td><td>file_types</td><td>NAME</td><td>Booklet</td><td>6</td><td>3</td></tr>
+<tr class="odd"><td>24 451</td><td>file_types</td><td>NAME</td><td>Auxiliary materials</td><td>7</td><td>3</td></tr>
+<tr><td>24 452</td><td>file_types</td><td>NAME</td><td>Manual</td><td>8</td><td>3</td></tr>
+<tr class="odd"><td>53 950</td><td>file_types</td><td>NAME</td><td>Detailing, explosion diagram</td><td>9</td><td>2</td></tr>
+<tr><td>53 951</td><td>file_types</td><td>NAME</td><td>Main image 1C</td><td>10</td><td>2</td></tr>
+<tr class="odd"><td>53 952</td><td>file_types</td><td>NAME</td><td>Brand site main image</td><td>11</td><td>2</td></tr>
+<tr><td>53 953</td><td>file_types</td><td>NAME</td><td>Brand site additional image</td><td>12</td><td>2</td></tr>
+<tr class="odd"><td>53 954</td><td>file_types</td><td>NAME</td><td>Sale photo</td><td>15</td><td>2</td></tr>
+<tr><td>1 062 027</td><td>file_types</td><td>NAME</td><td></td><td>20</td><td>2</td></tr>
+<tr class="odd"><td>1 062 029</td><td>file_types</td><td>NAME</td><td></td><td>22</td><td>2</td></tr>
+<tr><td>1 062 030</td><td>file_types</td><td>NAME</td><td></td><td>23</td><td>2</td></tr>
+<tr class="odd"><td>1 062 031</td><td>file_types</td><td>NAME</td><td></td><td>24</td><td>2</td></tr>
+<tr><td>1 062 032</td><td>file_types</td><td>NAME</td><td></td><td>25</td><td>2</td></tr>
+<tr class="odd"><td>1 062 033</td><td>file_types</td><td>NAME</td><td></td><td>26</td><td>2</td></tr>
+<tr><td>1 062 034</td><td>file_types</td><td>NAME</td><td></td><td>27</td><td>2</td></tr>
+<tr class="odd"><td>1 062 035</td><td>file_types</td><td>NAME</td><td></td><td>28</td><td>2</td></tr>
+<tr><td>802 232</td><td>pr_moderated_objects_statuses</td><td>NAME</td><td>New</td><td>1</td><td>2</td></tr>
+<tr class="odd"><td>1 068 075</td><td>pr_products</td><td>NAME</td><td>FOUR À PIZZA ZANOLLI CITOYEN PW 9/MC</td><td>7 203</td><td>2</td></tr>
+<tr><td>1 064 822</td><td>pr_products</td><td>NAME</td><td>Éplucheur de pommes de terre APACH APP10H 3F.</td><td>31 168</td><td>2</td></tr>
+<tr class="odd"><td>1 065 099</td><td>pr_products</td><td>NAME</td><td>FOUR À CONVECTION APACH AD44M ECO</td><td>31 465</td><td>2</td></tr>
+<tr><td>1 065 776</td><td>pr_products</td><td>NAME</td><td>FOUR ÉLECTRIQUE DOUBLE CHAMBRE CUPPONE DN935/2CD</td><td>32 930</td><td>2</td></tr>
+<tr class="odd"><td>1 066 508</td><td>pr_products</td><td>NAME</td><td>GRILL OUVERT JOSPER BASQUE PVJ-076-2</td><td>271 528</td><td>2</td></tr>
+<tr><td>1 066 763</td><td>pr_products</td><td>NAME</td><td>CPNVECTION FOUR LAINOX AROMA NABOO 5.0 AREN134B+NPS2+NPK2</td><td>301 865</td><td>2</td></tr>
+<tr class="odd"><td>1 065 260</td><td>pr_products</td><td>NAME</td><td>CUISEUR À PÂTES ÉLECTRIQUE APACH SÉRIE 700 APACH APPG-47P/PL</td><td>303 952</td><td>2</td></tr>
+<tr><td>1 065 296</td><td>pr_products</td><td>NAME</td><td>Marmite électrique APACH SÉRIE 700 APKE-77/L</td><td>304 142</td><td>4</td></tr>
+<tr class="odd"><td>372 073</td><td>pr_products</td><td>NAME</td><td>Gastronorm p/c 1/6 Н=100, series Jiwings 8628</td><td>306 777</td><td>2</td></tr>
+<tr><td>1 066 850</td><td>pr_products</td><td>NAME</td><td>FOUR VAPEUR LAINOX SAPIENS BOOSTÉ SAE061B+NPK</td><td>306 888</td><td>2</td></tr>
+<tr class="odd"><td>1 066 855</td><td>pr_products</td><td>NAME</td><td>FOUR VAPEUR LAINOX SAPIENS BOOSTÉ SAE061B+OB061E+NPK</td><td>306 889</td><td>2</td></tr>
+<tr><td>1 064 821</td><td>pr_products</td><td>NAME</td><td>Éplucheur de pommes de terre APACH APP10H 1F.</td><td>314 615</td><td>2</td></tr>
+<tr class="odd"><td>1 066 230</td><td>pr_products</td><td>NAME</td><td>DÉSHYDRATEUR HURAKAN HKN-DHD8</td><td>324 044</td><td>2</td></tr>
+<tr><td>1 065 048</td><td>pr_products</td><td>NAME</td><td>KIT D'EMPILAGE POUR FOURS APQ/ABQ APACH SKSQ</td><td>325 269</td><td>2</td></tr>
+<tr class="odd"><td>1 067 473</td><td>pr_products</td><td>NAME</td><td>RÉCIPIENT POUR SÉCHER LES LÉGUMES AVEC PANIER SIRMAN IV9800775C</td><td>327 052</td><td>2</td></tr>
+<tr><td>1 193 853</td><td>pr_products</td><td>NAME</td><td>CHAMPAGNE GLASS BRUSH FOR GLASS POLISHER BESSER VACUUM SPEEDY GLASS</td><td>329 662</td><td>2</td></tr>
+<tr class="odd"><td>802 236</td><td>supplier_discounts_types</td><td>NAME</td><td>for products</td><td>1</td><td>2</td></tr>
+<tr><td>802 235</td><td>supplier_discounts_types</td><td>NAME</td><td>for categories</td><td>2</td><td>2</td></tr>
+<tr class="odd"><td>802 234</td><td>supplier_discounts_types</td><td>NAME</td><td>for brands</td><td>3</td><td>2</td></tr>
+<tr><td>802 233</td><td>supplier_discounts_types</td><td>NAME</td><td>for a combination of category and brand</td><td>4</td><td>2</td></tr>
+<tr class="odd"><td>815 112</td><td>supplies_statuses</td><td>NAME</td><td>Draft</td><td>1</td><td>2</td></tr>
+<tr><td>815 111</td><td>supplies_statuses</td><td>NAME</td><td>Application accepted online. Information is being prepared for sending to the accounting system</td><td>2</td><td>2</td></tr>
+<tr class="odd"><td>815 110</td><td>supplies_statuses</td><td>NAME</td><td>Sent to the accounting system</td><td>3</td><td>2</td></tr>
+<tr><td>815 109</td><td>supplies_statuses</td><td>NAME</td><td>Created. Pending approval</td><td>4</td><td>2</td></tr>
+<tr class="odd"><td>815 108</td><td>supplies_statuses</td><td>NAME</td><td>Approved. Information is being prepared for transfer to the warehouse</td><td>5</td><td>2</td></tr>
+<tr><td>815 107</td><td>supplies_statuses</td><td>NAME</td><td>The information has been transferred to the warehouse. Delivery expected on the specified date</td><td>6</td><td>2</td></tr>
+<tr class="odd"><td>815 106</td><td>supplies_statuses</td><td>NAME</td><td>Shipped</td><td>7</td><td>2</td></tr>
+<tr><td>815 105</td><td>supplies_statuses</td><td>NAME</td><td>Canceled</td><td>8</td><td>2</td></tr>
+</table></body></html>

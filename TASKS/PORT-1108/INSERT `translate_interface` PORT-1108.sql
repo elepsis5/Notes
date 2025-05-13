@@ -1,0 +1,3 @@
+INSERT INTO `translate_interface` (DATE_CREATE, DATE_UPDATE, site_id, lang_id, `key`, value) VALUES (DEFAULT, DEFAULT, 1, 2, 'PRICES_D_PRICE_RETAIL', 'Розничная цена товара :currency_code.');
+INSERT INTO `translate_interface` (DATE_CREATE, DATE_UPDATE, site_id, lang_id, `key`, value) VALUES (DEFAULT, DEFAULT, 1, 3, 'PRICES_D_PRICE_RETAIL', 'Retail price of the item :currency_code.');
+INSERT INTO `translate_interface` (DATE_CREATE, DATE_UPDATE, site_id, lang_id, `key`, value) VALUES (DEFAULT, DEFAULT, 1, 5, 'PRICES_D_PRICE_RETAIL', 'Prix de détail de l''article :currency_code.');

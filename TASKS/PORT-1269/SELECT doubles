@@ -1,0 +1,9 @@
+SELECT `translate_interface`.`ID`, `translate_interface`.`key`, `translate_interface`.site_id, `translate_interface`.lang_id, COUNT(*)
+FROM `translate_interface`
+GROUP BY `translate_interface`.`key`, `translate_interface`.`site_id`, `translate_interface`.`lang_id`
+HAVING COUNT(*) > 1;
+
+SELECT `translate`.`ID`, `translate`.`TABLE`, `translate`.`FIELD`, `translate`.`VALUE`, `translate`.`ROW_ID`, COUNT(*)
+FROM `translate`
+GROUP BY `translate`.`TABLE`, `translate`.`FIELD`, `translate`.`ROW_ID`, `translate`.`LANG`
+HAVING COUNT(*) > 1;

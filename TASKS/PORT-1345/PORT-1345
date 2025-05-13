@@ -1,0 +1,6 @@
+PORT-1345
+
+Фильтр типа радио по текущей логике всегда содержит элемент под ключем 'all'. 
+В app/Http/Controllers/CatalogController.php и в app/Http/Controllers/SearchPageController.php нужно написать функцию сортировки элементов фильтра, где элемент под ключом 'all' помещается на первое место и применять ее в методе extendedFiltersRender() перед рендером. 
+
+Функция сортировки и тесты - 30 мин.

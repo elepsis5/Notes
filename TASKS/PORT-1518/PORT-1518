@@ -1,0 +1,13 @@
+PORT-1518
+
+композитная модель:
+	- добавить новые компоненты connection_name в config/compozite/cad_connection_point_external.php и config/compozite/cad_connection_point.php;
+	- добавить описание полей в моделях.
+portal:
+	- в методе save_excel() app/Http/Controllers/EquipCadController.php:1753 добавить поле connection_name в процесс подготовки данных на отправку;
+	- в js public/common/js/equipcad/equipcad-detail.js добавить чтение из data-атрибута connection_name в блоках кода на строках:
+		- public/common/js/equipcad/equipcad-detail.js:445
+		- public/common/js/equipcad/equipcad-detail.js:565
+		- public/common/js/equipcad/equipcad-detail.js:670
+		- public/common/js/equipcad/equipcad-detail.js:1101
+	- в resources/views/equipcad/detail__item.blade.php:34 добавить data-атрибут connection_name;

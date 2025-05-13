@@ -1,0 +1,4 @@
+INSERT INTO pr_brands_files_types (SOURCE, BUCKET, NAME, CODE) VALUES ('IMEX', 'upload', 'PDF каталог ОАЭ', 'catalog_uae');
+INSERT INTO pr_brands_files_types (SOURCE, BUCKET, NAME, CODE) VALUES ('IMEX', 'upload', 'Сертификат ОАЭ', 'certificate_uae');
+INSERT INTO pr_brands_files_types (SOURCE, BUCKET, NAME, CODE) VALUES ('IMEX', 'upload', 'PDF каталог США', 'catalog_usa');
+INSERT INTO pr_brands_files_types (SOURCE, BUCKET, NAME, CODE) VALUES ('IMEX', 'upload', 'Сертификат США', 'certificate_usa');

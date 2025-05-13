@@ -1,0 +1,11 @@
+PORT-1350
+
+    /**
+     * Определяет, является ли пользователь контент-менеджером
+     *
+     * @return boolean
+     */
+    public function isContentManager(): bool
+    {
+        return $this->refersToGroup(['contentmanager']);
+    }

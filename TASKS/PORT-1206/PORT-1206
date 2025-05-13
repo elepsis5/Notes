@@ -1,0 +1,22 @@
+PORT-1206
+
+.basket-image .symbol .symbol-label
+{
+    position: relative;
+    display: inline-block;
+}
+
+.basket-image .symbol .symbol-label img
+{
+    position: absolute;
+    width: auto;
+    height: auto !important;
+    max-width: 80%;
+    max-height: 80%;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin: auto;
+    display: inline-block;
+}

@@ -1,0 +1,20 @@
+SELECT s1.`id` AS RU_ID, s2.`id` AS EN_ID, s3.`id` AS FR_ID, s1.`key` AS L_KEY, s1.`value` AS RU_V, s2.`value` AS EN_V, s3.`value` AS FR_V FROM `translate_interface` s1
+LEFT JOIN translate_interface s2
+ON s1.key = s2.key
+LEFT JOIN translate_interface s3
+ON s1.key = s3.key
+WHERE s1.`site_id` = 1 AND s2.`site_id`=1 AND s3.`site_id`=1 AND s1.`lang_id`=2 AND s2.`lang_id`=3 AND s3.`lang_id`=5
+
+
+SELECT `translate`.`ID`, `translate`.`TABLE`, `translate`.`FIELD`, `translate`.`VALUE`, `translate`.`ROW_ID`,
+`shipment_status`.`CODE`
+FROM `translate`
+inner JOIN `shipment_status` ON translate.ROW_ID = shipment_status.ID
+WHERE `translate`.`TABLE` = 'shipment_status'
+AND `translate`.`LANG` = 5
+
+
+SELECT `translate`.`ID`, `translate`.`TABLE`, `translate`.`FIELD`, `translate`.`VALUE`, `translate`.`ROW_ID`, COUNT(*)
+FROM `translate`
+GROUP BY `translate`.`TABLE`, `translate`.`FIELD`, `translate`.`ROW_ID`, `translate`.`LANG`
+HAVING COUNT(*) > 1;

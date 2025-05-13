@@ -1,0 +1,13 @@
+ТЗ IMEX-144:
+* Добавить элемент меню в side.php
+
+* Создать роут GET links/list;
+
+* Созать шаблон списка app/resources/views/links_list.blade.php. Заполнить по аналогии с app/resources/views/news_list.blade.php.
+
+* В контроллере SocialLinksContoller создать метод list().  Передаем в шаблон хлебные крошки.
+
+* В контроллере SocialLinksContoller создать метод apiGetList().  Получаем из базы (iblock_elements) все записи в соответствующим IBLOCK_ID. Обогощаем полученную коллекцию - получаем из iblock_char_values зоны. Получаем метаданные по аналогии с новостями. Отдаем json.
+
+* Создать common/js/datatables/links-list.js заполнить по аналогии с common/js/datatables/news-list.js.
+

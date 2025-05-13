@@ -1,0 +1,88 @@
+function getValuesByStep(step) {
+    let stepData = {};
+    stepData.step = step;
+    stepData.data = {};
+
+    let section = $('.step__wrapper[data-step="'+ step +'"]');
+    section.find('.field_value').each(function () {
+        let field = $(this);
+        let tag = this.tagName;
+        console.log('field------------');
+        console.log(this.tagName);
+        let c_input__name = field.attr('name');
+        let c_input__type = field.prop("type");
+        // let tagName = field[0].tagName;
+        // console.log(tagName, '====================== tagName ========================');
+
+        let c_input__value = undefined;
+        // console.log(c_input__value)
+
+        switch (tag) {
+            case 'INPUT':
+                switch (c_input__type) {
+                    case 'checkbox':
+                        if (field.prop('checked') == true) {
+                            c_input__value = 1;
+                        } else {
+                            c_input__value = 0;
+                        }
+                        break;
+                    case 'radio':
+                        if (field.prop('checked') == true) c_input__value = field.val();
+                        break;
+                    default:
+                        c_input__value = field.val().replace(/,/, '.');
+                }
+                valuesForCheckStep[c_input__name] = c_input__value;
+                break;
+            case 'SELECT':
+                valuesForCheckStep[c_input__name] = field.val();
+                break;
+            case 'TEXTAREA':
+                valuesForCheckStep[c_input__name] = field.html();
+                break;
+        }
+
+
+
+
+
+
+
+
+        // if (tag === 'INPUT') {
+        //     switch (c_input__type) {
+        //         case 'checkbox':
+        //             if (field.prop('checked') == true) {
+        //                 c_input__value = 1;
+        //             } else {
+        //                 c_input__value = 0;
+        //             }
+        //             break;
+        //         case 'radio':
+        //             if (field.prop('checked') == true) c_input__value = field.val();
+        //             break;
+        //         default:
+        //             c_input__value = field.val().replace(/,/, '.');
+        //     }
+        //     valuesForCheckStep[c_input__name] = c_input__value;
+        // } else {
+        //     if (tagName === 'SELECT') {
+        //         valuesForCheckStep[c_input__name] = field.siblings('.select2-container').find('.select2-selection__rendered').attr('title');
+        //     }
+        // }
+        stepData.data[c_input__name] = c_input__value;
+
+        // if (c_input__name) {
+        //     if (tagName === 'SELECT') {
+        //         valuesForCheckStep[c_input__name] = field.siblings('.select2-container').find('.select2-selection__rendered').attr('title');
+        //     } else {
+        //         valuesForCheckStep[c_input__name] = c_input__value;
+        //     }
+        //     stepData.data[c_input__name] = c_input__value;
+        // }
+
+    });
+
+    return stepData;
+}

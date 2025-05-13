@@ -1,0 +1,20 @@
+BRAND-242
+
+1. верстку берем из https://themes.themewild.com/smartshop/contact.html
+2. JS. Общий файл feedbach_form.js для отправки данных формы. Cбор данных полей по классу. Валидация обязательных полей. Отправка на бэк по AJAX.
+3. Бэк. Новый контроллер WebformController.php. Метод submit(). В нем валидация обязательных полей. Капча по аналогии со страницей регистрации на портале. Создание новой сущности App\Classes\Feedback\Webform и запись в БД.
+
+- Отправка события на API портала. После создания вебформы (используем app/Http/Controllers/FormsController.php) отправляем событие на api портала по аналогии src/app/app/Http/Controllers/kayman/AllFormsController::dealerFormSubmit();
+- заводим новый тип формы HURAKANHK_FEEDBACK_FORM. Создаем записи в webform_fields с полями NAME, Phone, E-mail, City, Subject, Message. На портале заводим новую директорию resources/views/notifications/FEEDBACK/HURAKANHK_FEEDBACK_FORM. Шаблоны по аналогии с FEEDBACK_FORM.
+- Валидация.
+	Валидация на бэке:
+	- создаем отдельный класс Request c паттерном валидации полей 
+			`'name' => 'required',
+            'email' => 'email',
+            'city' => 'required',
+            'short_subject' => 'required',
+            'message' => 'required'`
+	Валидация на фронте:
+	- в зависимости от ответа бэка выводим алерт с ошибкой. 
+- Переиспользование формы на любой странице сайта. Создаем 2 варианта шаблона с формой. Создаем хелпер, который будет возвращать верстку, основываясь на обязательном параметре $popup = false. Если $popup = true, верстка будет с data-параметрами для попапа. Хэлпер вызываем в блэйде.
+- Подсказки. Использовать подсказки по городам из app/Http/Controllers/HintsController::getCities();

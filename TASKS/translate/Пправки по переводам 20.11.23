@@ -1,0 +1,11 @@
+UPDATE translate_interface SET value = 'Comment on the transaction' WHERE id = 6882;
+UPDATE translate_interface SET value = 'Register transaction' WHERE id = 6892;
+UPDATE translate_interface SET value = 'Search products' WHERE id = 7230;
+UPDATE translate_interface SET value = 'Enter part of the name or code' WHERE id = 7232;
+UPDATE translate_interface SET value = 'Search products' WHERE id = 7236;
+UPDATE translate_interface SET value = 'Transactions list' WHERE id = 7434;
+UPDATE translate_interface SET value = 'All transactions' WHERE id = 7468;
+UPDATE translate_interface SET value = 'Type part of the comment' WHERE id = 7484;
+UPDATE translate_interface SET value = 'Transaction registration date' WHERE id = 7512;
+UPDATE translate_interface SET value = 'Create a weight and dimensions report from the specification' WHERE id = 9032;
+UPDATE translate_interface SET value = 'Please select the date' WHERE id = 7130;

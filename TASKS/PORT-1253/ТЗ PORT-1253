@@ -1,0 +1,122 @@
+ТЗ:
+**Отображение цен со скидкой**
+1. **Цена по прайсу без скидок - у дилера нет никаких скидок на товар**
+	* в файле public/common/js/catalog/detail/catalog-detail.js в блоке рендера цены убрать отображение цены в валюте.
+	_Аналогичные наработки добавить в файл public/common/js/catalog/home/catalog-datatable.js_!!!
+
+	**image**
+	* Изменить текст тултипа. 
+	В классе app/Models/Currency.php в метод formatSum() добавить второй агрумент $basePriceTrigger = false, который будет идентификатором, что форматируется именно базовая цена в валюте. В теле метода добавить условие:
+	`
+        if ($basePriceTrigger) {
+            $result = '<b>' . str_ireplace($this->letter_code, $this->symbol_code, $formatted) . '</b>';
+        } else {
+            $result = str_ireplace($this->letter_code, $this->symbol_code, $formatted);
+        }
+        return $result;
+	`
+	Также добавить триггер в метод formatPrice() класса app/Classes/Pricing/BasicPricesProcessor.php:
+	`
+	    public function formatPrice(Currency $currency, string $price, bool $basePriceTrigger = false): string
+    	{
+        	return $currency->formatSum($price, $basePriceTrigger);
+    	}
+	`
+	В прайспроцессорах app/Classes/Pricing/EurasPricesProcessor.php и app/Classes/Pricing/EUPricesProcessor.php при форматировании базовой цены добавить аргумент триггера:
+	`$formattedBasePrice = $this->formatPrice($basicCurrency, $price->price, true);`. И добавить текст в финальный вариант расшифровки стоимости: 
+	`$detailCalculation = 'Цена по прайсу: ' . str_ireplace($finalPrice . $this->currency->letter_code, $formattedFinalPrice, $detailCalculation);`
+
+
+	Тестирование:
+	Открыть страницу товара, например 144929. Убедиться, что на товар нет никаких персональных скидок и нет примененных промокодов. Цена должна отображаться согласно задаче. Так же проверить этот товар в списке каталога.
+
+2. **Цена с перманентной скидкой из 1С - у пользователя есть только скидка из 1С на товар**
+	* Завести перевод "Персональная скидка" с ключом PERSONAL_DISCOUNT. В классе app/Models/Discount.php в методе getDescription() в строке 139 заменить ключ перевода на PERSONAL_DISCOUNT и убрать конкатенацию значения скидки `'.$this->value.'% '`. Добавить конкатенацию `'.$this->value.'% '` в конец каждого описания.
+
+	* В файле public/common/js/catalog/detail/catalog-detail.js в блоке `else if(showDiscounts == 1 && data.priceWithDiscountsValue !== price)` (строка 181) убрать слеш в конце у переменной tooltipDiscounts.
+	Далее в блоке `else if(priceWithDiscounts !== '' && data.discount !== null) {` (строка 217) перенести `data.price + tooltipNds` в нижний блок `<span>`  и заменить ими там `data.priceBase`.
+	_Аналогичные наработки добавить в файл public/common/js/catalog/home/catalog-datatable.js_!!!
+
+
+	Тестирование:
+	Открыть страницу товара, например 215488. Убедиться, что на товар есть перманентная скидка. Цена должна отображаться согласно задаче. Так же проверить этот товар в списке каталога.
+
+3. **Цена за онлайн + Цена с перманентной скидкой из 1С - у пользователя есть и скидка из 1С, и скидка за оформление онлайн на товар**
+	* в классах app/Classes/Pricing/BasicPricesProcessor.php, app/Classes/Pricing/EurasPricesProcessor.php, app/Classes/Pricing/EUPricesProcessor.php в методах basePrice2FinalPrice() добавить необязательный флаг $useDiscount1c = false, отвечающий за признак получения цены с учетом только скидки за онлайн.
+	В классах app/Classes/Pricing/EurasPricesProcessor.php, app/Classes/Pricing/EUPricesProcessor.php создать константу 1C_DISCOUNTS_PRIORITY = [0,1] и в методах basePrice2FinalPrice() добавить к блоку `if($useDiscounts && !$priceIsSale) {` условие
+	`elseif ($useDiscount1c && !$priceIsSale) {
+            $discounts = $product->discounts->filter(function($item) {
+                return in_array($item->priority, static::1C_DISCOUNTS_PRIORITY);
+            });
+            $calculationParameters['discounts'] = $discounts->all();
+    }`. Что означает получение цены только с перманентными скидками, если не учазано получать ВСЕ скидки.			
+
+	* в контроллере app/Http/Controllers/CatalogApiController.php в методе collectCurrentStocks() завести свойство $this->priceOnlyWithDiscount1cValue = '', которое будет отвечать за цену с учетом только перманентных скидок. 
+	В блоке `if($useDiscounts == 1)` (строка 751) присвоить свойству priceOnlyWithDiscount1cValue результат работы метода getFinalPriceWithFlags() модели app/Models/Price.php со следующими флагами:
+	`$this->priceOnlyWithDiscount1cValue = $price->getFinalPriceWithFlags(null, null, false, true, false, false, true)->getPriceFormatted()`.
+	_Аналогичные наработки добавить в метод processProducts()_!!!
+
+	*  в файле public/common/js/catalog/detail/catalog-detail.js, т.к. теперь нам нужно показывать и цену с лейблом промо/онлайн и цену с перманентной скидкой нужно завести переменные отдельно для скидок 1с `tooltipDiscount1c` и `discountDescription1c`. В tooltipDiscount1c записывать тултип с зеленым флагом, а в discountDescription1c только описании перманентной скидки.
+	Далее при условии, что есть скидка онлайн/промо добавлять дополнительную разметку в `prices` с ценой priceOnlyWithDiscount1cValue, тултипом и описанием из `tooltipDiscount1c` и `discountDescription1c`.
+	_Аналогичные наработки добавить в файл public/common/js/catalog/home/catalog-datatable.js_!!!
+
+
+	Тестирование:
+	Открыть страницу товара, например 215488. Убедиться, что на товар есть перманентная скидка и скидка на онлайн. Цена должна отображаться согласно задаче. Так же проверить этот товар в списке каталога.
+
+4. **Цена за онлайн - у пользователя есть скидка за оформление онлайн на товар (без скидки из 1С)**
+	C учетом изменений в п.3 при отсутствии перманентной скидки, будет отображаться цена с промо/онлайн скидкой, в зависимости от бОльшей.
+
+	Тестирование:
+	Открыть страницу товара, например 144929. Убедиться, что на товар нет перманентных скидок, но есть скидка на онлайн. Цена должна отображаться согласно задаче. Так же проверить этот товар в списке каталога.
+
+**При применении промокода**
+1. **Промокод + Цена по прайсу без скидок - у дилера нет никаких скидок на товар**
+	* в файле public/common/js/catalog/detail/catalog-detail.js у переменной `tooltipPromocodes` добавить классы `label label-light-primary label-pill label-inline` в <span>. Содержимое <span> заменать на 'PROMO' и убрать слеш в конце.
+	В блоке `if(data.promocode){` (строка 213) перенести `data.price + tooltipNds` в нижний блок `<span>`  и заменить ими там `data.priceBase`.
+	_Аналогичные наработки добавить в файл public/common/js/catalog/home/catalog-datatable.js_!!!
+
+	Тестирование:
+	Открыть страницу товара, например 144929. Убедиться, что на товар нет никаких персональных скидок, но есть примененный промокод. Цена должна отображаться согласно задаче. Так же проверить этот товар в списке каталога.
+
+2.  **Цена с перманентной скидкой из 1С - у пользователя есть только скидка из 1С на товар**
+	* в контроллере app/Http/Controllers/CatalogApiController.php в методе collectCurrentStocks() завести свойство $this->priceOnlyWithDiscount1cValue = '', которое будет отвечать за цену со скидками, но без учета промокода.
+	В блоке `if($useDiscounts == 1)` (строка 751) присвоить свойству результат работы метода getFinalPriceWithFlags() модели app/Models/Price.php со следующими флагами:
+	`$this->priceOnlyWithDiscount1cValue = $price->getFinalPriceWithFlags(null, null, false, true, false, false, true)->getPriceFormatted();`
+	_Аналогичные наработки добавить в метод processProducts()_!!!
+
+	* в файле public/common/js/catalog/detail/catalog-detail.js использовать priceOnlyWithDiscount1cValue в блоке блоке `if(data.promocode){` (строка 213) с условием 
+	`if (priceOnlyWithDiscount1cValue !== data.price) {`
+	При этом при сборке тултипа tooltipDiscounts записывать описание персональной скидки, при условии если пришли данные по скидке.
+	_Аналогичные наработки добавить в файл public/common/js/catalog/home/catalog-datatable.js_!!!
+
+	Тестирование:
+	Открыть страницу товара, например 215488. Убедиться, что на товар есть перманентная скидка и примененный промокод. Цена должна отображаться согласно задаче. Так же проверить этот товар в списке каталога.
+
+3. **Цена за онлайн + Цена с перманентной скидкой из 1С - у пользователя есть и скидка из 1С, и скидка за оформление онлайн на товар**
+	В файле public/common/js/catalog/detail/catalog-detail.js, т.к. теперь нам нужно показывать и цену с лейблом промо/онлайн и цену с перманентной скидкой нужно завести переменные отдельно для скидок 1с `tooltipDiscount1c` и `discountDescription1c`. В tooltipDiscount1c записывать тултип с зеленым флагом, а в discountDescription1c только описании перманентной скидки.
+	Далее при условии, что есть скидка онлайн/промо добавлять дополнительную разметку в `prices` с ценой priceOnlyWithDiscount1cValue, тултипом и описанием из `tooltipDiscount1c` и `discountDescription1c`.
+	_Аналогичные наработки добавить в файл public/common/js/catalog/home/catalog-datatable.js_!!!
+
+
+	Тестирование:
+	Открыть страницу товара, например 171253. Убедиться, что на товар есть перманентная скидка, скидка на онлайн и примененный промокод. Цена должна отображаться согласно задаче. Так же проверить этот товар в списке каталога.
+
+4. **Цена за онлайн - у пользователя есть скидка за оформление онлайн на товар (без скидки из 1С)**
+	C учетом изменений в п.3 при отсутствии перманентной скидки, будет отображаться цена с промо/онлайн скидкой, в зависимости от бОльшей.
+
+	Тестирование:
+	Открыть страницу товара, например 171253. Убедиться, что на товар нет перманентной скидки, но есть скидка на онлайн и примененный промокод. Цена должна отображаться согласно задаче. Так же проверить этот товар в списке каталога.
+
+**Чек-бокс "Отображать цены со скидкой" выключен**
+С учетом изменений в п.1 цена будет отображаться в требуемом формате.
+
+Тестирование:
+Проверить предыдущие товары с включеным чекбоксом и без. Цена должна отображаться согласно задаче в списке каталога и на детальной.
+
+**Чек-бокс "Показать розничные цены" включен**
+С учетом изменений в п.1 цена будет отображаться в требуемом формате.
+
+Тестирование:
+Проверить предыдущие товары с включеным чекбоксом и без. Цена должна отображаться согласно задаче в списке каталога и на детальной.
+

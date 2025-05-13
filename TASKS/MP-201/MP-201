@@ -1,0 +1,4 @@
+MP-201
+
+
+"SQLSTATE[42000]: Syntax error or access violation: 1142 UPDATE command denied to user 'api-app-cluster-writer'@'172.16.0.3' for table `middle`.`pr_filters_data` (SQL: update `pr_filters_data` set `GENERAL_COMMISSION` = 1 where `GENERAL_COMMISSION` = 0)"
