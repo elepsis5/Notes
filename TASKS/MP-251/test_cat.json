@@ -1,0 +1,20 @@
+[
+  {
+    "_id": "6825c5aaa8f5ff25b561b365",
+    "supplier": "80095",
+    "name": "Блендеры барные",
+    "parent_id": "0"
+  },
+  {
+    "_id": "6825c5aaa8f5ff2345225b561b365",
+    "supplier": "80095",
+    "name": "Блендеры 1",
+    "parent_id": "6825c5aaa8f5ff25b561b365"
+  },
+  {
+    "_id": "6825c5aaa8f5ff23425b561b365",
+    "supplier": "80095",
+    "name": "Блендеры 2",
+    "parent_id": "6825c5aaa8f5ff25b561b365"
+  }
+]

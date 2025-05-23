@@ -1,0 +1,727 @@
+MP-252
+
+Сценарии:
+=====================================================================================
+	Во всех сценариях получем все товары данного поставщика из БД
+а) Синх категории:
+	1. фильтруем все товары данной категории;
+	2. фильтруем все товары по артикулам из импорта;
+	3. сравниваем товары:
+		- те товары, что пришли в импорте и есть в БД, но нет в коллекции по категории - переход в категорию (UPDATE).
+		- те товары, что пришли в импорте и есть в БД, но поля изменены - обновление (UPDATE).
+		- те товары, что пришли в импорте и их нет в БД - создание (CREATE).
+		- те, что есть в БД, но нет в импорте - деактивация (DEACTIVATE).
+	4. Берем полученный id категоии и получаем все дочерние категории из БД;
+	5. Собираем коллекцию категорий из импорта;
+	6. Сравниваем категории:
+		- те, что пришли и отсутствуют в БД - CREATE.
+		- те, что не пришли и есть в БД - DELETE.
+	
+б) Синх определенный товаров:
+	1. фильтруем все товары данных артикулов;
+	2. сравниваем товары:
+		- если нет в БД - CREATE.
+		- если есть и отличаются - UPDATE.
+	3. Получаем все категории из БД;
+	4. Собираем коллекцию категорий из импорта;
+	5. Сравниваем категории:
+		- те, что пришли и отсутствуют в БД - CREATE.
+
+в) Синх всего каталога:
+	1. сравниваем товары:
+		- те товары, что пришли в импорте и есть в БД, но поля изменены - обновление (UPDATE).
+		- те товары, что пришли в импорте и их нет в БД - создание (CREATE).
+		- те товары, что есть в БД, но нет в импорте - деактивация (DEACTIVATE).
+	3. Получаем все категории из БД;
+	4. Собираем коллекцию категорий из импорта;
+	5. Сравниваем категории:
+		- те, что пришли и отсутствуют в БД - CREATE.
+		- те, что есть в БД, но нет в импорте - DELETE.
+
+
+
+Общая логика для всех сценариев:
+=====================================================================================
+1. Отправка данных в едином формате на API для валидации (12 ч.)
+	- роут API supplier/products/import/validate:
+		- базовая валидация (наличие обязательных полей в теле запроса);
+		- валидация товаров. Возврат коллекций с результатами (создание/обновление/деактивация) согласно сценарию и ошибками (в том числе дубликаты) для пометок в excel таблице;
+		- по типизации ориентироваться на создание одиночного товара через интерфейс.
+-------------------------------------------------------------------------------------
+2. Отображение excel таблицы. (6 ч.)
+	- метод check() получает ответ от API формирует ajax ответ и отдает на фронт - аналогично наработкам из marketplace.
+-------------------------------------------------------------------------------------
+3. Валидация при изменении ячейки (8 ч.)
+	- роут API supplier/products/import/cellValidate:
+		- собираем данные, отправляем на API для валидации;
+			- собираем данные только измененного товара и отправляем только его. Т.е. при каждом изменении ячейки ajax запрос. + отправляем данные всех столбцов, требующих проверку на уникальность.
+-------------------------------------------------------------------------------------	
+4. Отправка данных для записи в БД (12 ч.)
+	- роут API supplier/products/import/execute:
+		- отправляем данные в том же формате, как после парсинга
+			- повторная валидация
+			- запись в БД на основе результатов валидации
+Вопросы:
+	- изменения в категориях проводим без уведомления пользователя?
+	- валидацию по категориям добаляем во все этапы или только в последний?
+
+
+    /supplier/products/import/validate/ - отправляется вся таблица, происходит валидация, в ответе приходит сводная информация что будет сделано, но на этом этапе ещё ничего не выполняется
+    /supplier/products/import/validate/row/ - отправляется одна строка если изменено любое поле кроме артикула, возвращаются результаты валидации для строки
+    /supplier/products/import/validate/article/ - отправляются все артикулы из импорта (именно тут из бд смотреть не надо, если где-то тавар с таким артикулом то он будет перенесён а не задублирован)
+    /supplier/products/import/execute/ - отправляется вся таблица, происходит выполнение(синхронизация)
+
+
+---------------------------------------------------------------------------------------
+/supplier/products/import/validate/
+
+паттерн валидации:
+[
+    'request' => [
+        'ruleset' => ['required','not_empty'], // ключ обязателен (required),не должен быть пустым (not_empty)
+        'children'=>[
+            'apikey' => [
+                'type' => 'string', // значение поля должно быть строковым
+                'ruleset' => ['required','not_empty','autorize_key'] // ключ обязателен (required),не должен быть пустым (not_empty),поле является ключом авторизации (autorize_key)
+            ],
+            'user_id' => [
+                'type' => 'integer', // значение поля должно быть числовым
+                'ruleset' => ['required','not_empty'] // ключ обязателен (required),не должен быть пустым (not_empty)
+            ],
+            'dealer_id' => [
+                'type' => 'integer', // значение поля должно быть числовым
+                'ruleset' => ['required','not_empty'] // ключ обязателен (required),не должен быть пустым (not_empty)
+            ],
+            'supplier_id' => [
+                'type' => 'string', // значение поля должно быть строковым
+                'ruleset' => ['required','not_empty'] // ключ обязателен (required),не должен быть пустым (not_empty)
+            ],
+            'products' => [
+                'ruleset' => ['required'], // ключ обязателен (required)
+                'type' => 'array', // значение поля должно быть массивом
+                        'children'=> [
+				    	[
+				        "name" => [
+				            "ruleset" => [
+				                0 => "required" // ключ обязателен (required)
+				            ]
+				        ],
+				        "description" => [
+				            "ruleset" => [
+				                0 => "required" // ключ обязателен (required)
+				            ]
+				        ],
+				        "article" => [
+				            "ruleset" => [
+				                0 => "required" // ключ обязателен (required)
+				            ]
+				        ],
+				        "brand" => [
+				            "ruleset" => [
+				                0 => "required" // ключ обязателен (required)
+				        ],
+				        "category" => [
+				            "ruleset" => [
+				                0 => "required" // ключ обязателен (required)
+				            ]
+				        ],
+				        "country" => [
+				            "ruleset" => [
+				                0 => "required" // ключ обязателен (required)
+				            ]
+				        ],
+				        "length" => [
+				            "ruleset" => [
+				                0 => "required" // ключ обязателен (required)
+				            ]
+				        ],
+				        "width" => [
+				            "ruleset" => [
+				                0 => "required" // ключ обязателен (required)
+				            ]
+				        ],
+				        "height" => [
+				            "ruleset" => [
+				                0 => "required" // ключ обязателен (required)
+				            ]
+				        ],
+				        "power" => [
+				            "ruleset" => [
+				                0 => "required" // ключ обязателен (required)
+				            ]
+				        ],
+				        "voltage" => [
+				            "ruleset" => [
+				                0 => "required" // ключ обязателен (required)
+				            ]
+				        ],
+				        "price_catalog" => [
+				            "ruleset" => [
+				                0 => "required" // ключ обязателен (required)
+				            ]
+				        ],
+				        "price_dealer" => [
+				            "ruleset" => [
+				                0 => "required" // ключ обязателен (required)
+				            ]
+				        ],
+				        "currency" => [
+				            "ruleset" => [
+				                0 => "required" // ключ обязателен (required)
+				            ]
+				        ],
+				        "availability" => [
+				            "ruleset" => [
+				                0 => "required" // ключ обязателен (required)
+				            ]
+				        ],
+				        "delivery_time" => [
+				            "ruleset" => [
+				                0 => "required" // ключ обязателен (required)
+				            ]
+				        ],
+				        "files" => [
+				            "ruleset" => [
+				                0 => "required" // ключ обязателен (required)
+				            ]
+				        ],
+				    ]
+				]
+            ]
+        ]
+    ]
+];
+
+запрос:
+{
+    "url": "http://172.17.0.1:8081/v1/supplier/products/import/validate",
+    "sendData": {
+        "request": {
+            "apikey": "uvkz5zZljZoHTfNOpUigvALRhnRZki9y",
+            "user_id": 5607,
+            "dealer_id": 1966,
+            "supplier": "2345232d3425f2235",
+            "products": {
+			    "name": "РИСОВАРКА BECKERS"
+			    "description": "490*490*350 мм, 220В, 1.95 кВт, 9 кг, температура max +160°C"
+			    "article": "N-RIS8"
+			    "brand": "Beckers"
+			    "category": "БАРНОЕ ОБОРУДОВАНИЕ/БЛЕНДЕРЫ БАРНЫЕ"
+			    "country": "Япония"
+			    "length": "490"
+			    "width": "490"
+			    "height": "340"
+			    "power": "1.99"
+			    "voltage": "220"
+			    "price_catalog": "198.86"
+			    "price_dealer": "178.97"
+			    "currency": "EUR"
+			    "availability": "16"
+			    "delivery_time": "3"
+			    "files": "https://picture1.jpg https://picture2.png https://picture3.jpeg https://picture4.gif"
+			    "params": {
+			      "Парам_1": "111",
+			      "Парам_2": "",
+			      "Парам_3": "",
+			      "Парам_4": "222",
+			      "Парам_5": ""
+			    }
+			},
+			...
+        }
+    }
+}
+
+ответ success:
+{
+    'response': {
+        'success': 'true',
+        'total': 100,
+        'results': [
+        		{
+                    "index": 0,
+                    "status": "update",
+                    "errors": []
+                },
+                {
+                    "index": 1,
+                    "status": "update",
+                    "errors": []
+                },
+                {
+                    "index": 2,
+                    "status": "update",
+                    "errors": []
+                },
+                {
+                    "index": 3,
+                    "status": "update",
+                    "errors": []
+                },
+                ...
+        ],
+        'deactivated':  [
+                {
+                    "name": "Кот PM упитанный и наглый",
+                    "article": "kotik-kotyashka",
+                    "status": "deactivate"
+                },
+                {
+                    "name": "ывап",
+                    "article": "ыва",
+                    "status": "deactivate"
+                },
+                {
+                    "name": "ывап",
+                    "article": "ыцвуап",
+                    "status": "deactivate"
+                }
+        ],
+        'duplicates': [
+                "50" => [
+                    "article" => 'test1'
+                ],
+                "51" => [
+                    "article" => 'test1'
+                ],
+        ]
+    }
+
+};
+
+ответ error:
+{
+	"response":
+	    {
+	        "success":"true/false",
+	        "error_code": "", // код ошибки (если есть)
+	        "error_message": "", // описание ошибки (если есть ошибка)
+	    }
+}
+
+---------------------------------------------------------------------------------------
+/supplier/products/import/validate/row/
+паттерн валидации:
+[
+    'request' => [
+        'ruleset' => ['required','not_empty'], // ключ обязателен (required),не должен быть пустым (not_empty)
+        'children'=>[
+            'apikey' => [
+                'type' => 'string', // значение поля должно быть строковым
+                'ruleset' => ['required','not_empty','autorize_key'] // ключ обязателен (required),не должен быть пустым (not_empty),поле является ключом авторизации (autorize_key)
+            ],            
+            'user_id' => [
+                'type' => 'integer', // значение поля должно быть числовым
+                'ruleset' => ['required','not_empty'] // ключ обязателен (required),не должен быть пустым (not_empty)
+            ],
+            'dealer_id' => [
+                'type' => 'integer', // значение поля должно быть числовым
+                'ruleset' => ['required','not_empty'] // ключ обязателен (required),не должен быть пустым (not_empty)
+            ],
+            'supplier_id' => [
+                'type' => 'string', // значение поля должно быть строковым
+                'ruleset' => ['required','not_empty'] // ключ обязателен (required),не должен быть пустым (not_empty)
+            ],
+            'index' => [
+                'type' => 'integer', // значение поля должно быть числовым
+                'ruleset' => ['required','not_empty'] // ключ обязателен (required),не должен быть пустым (not_empty)
+            ],
+            'product' => [
+                'ruleset' => ['required'], // ключ обязателен (required)
+                'type' => 'array', // значение поля должно быть массивом
+                        'children'=> [
+				    	[
+				        "name" => [
+				            "ruleset" => [
+				                0 => "required" // ключ обязателен (required)
+				            ]
+				        ],
+				        "description" => [
+				            "ruleset" => [
+				                0 => "required" // ключ обязателен (required)
+				            ]
+				        ],
+				        "article" => [
+				            "ruleset" => [
+				                0 => "required" // ключ обязателен (required)
+				            ]
+				        ],
+				        "brand" => [
+				            "ruleset" => [
+				                0 => "required" // ключ обязателен (required)
+				        ],
+				        "category" => [
+				            "ruleset" => [
+				                0 => "required" // ключ обязателен (required)
+				            ]
+				        ],
+				        "country" => [
+				            "ruleset" => [
+				                0 => "required" // ключ обязателен (required)
+				            ]
+				        ],
+				        "length" => [
+				            "ruleset" => [
+				                0 => "required" // ключ обязателен (required)
+				            ]
+				        ],
+				        "width" => [
+				            "ruleset" => [
+				                0 => "required" // ключ обязателен (required)
+				            ]
+				        ],
+				        "height" => [
+				            "ruleset" => [
+				                0 => "required" // ключ обязателен (required)
+				            ]
+				        ],
+				        "power" => [
+				            "ruleset" => [
+				                0 => "required" // ключ обязателен (required)
+				            ]
+				        ],
+				        "voltage" => [
+				            "ruleset" => [
+				                0 => "required" // ключ обязателен (required)
+				            ]
+				        ],
+				        "price_catalog" => [
+				            "ruleset" => [
+				                0 => "required" // ключ обязателен (required)
+				            ]
+				        ],
+				        "price_dealer" => [
+				            "ruleset" => [
+				                0 => "required" // ключ обязателен (required)
+				            ]
+				        ],
+				        "currency" => [
+				            "ruleset" => [
+				                0 => "required" // ключ обязателен (required)
+				            ]
+				        ],
+				        "availability" => [
+				            "ruleset" => [
+				                0 => "required" // ключ обязателен (required)
+				            ]
+				        ],
+				        "delivery_time" => [
+				            "ruleset" => [
+				                0 => "required" // ключ обязателен (required)
+				            ]
+				        ],
+				        "files" => [
+				            "ruleset" => [
+				                0 => "required" // ключ обязателен (required)
+				            ]
+				        ],
+				    ]
+				]
+            ]
+        ]
+    ]
+];
+
+запрос:
+{
+    "url": "http://172.17.0.1:8081/v1/supplier/products/import/validate/row/",
+    "sendData": {
+        "request": {
+            "apikey": "uvkz5zZljZoHTfNOpUigvALRhnRZki9y",
+            "user_id": 5607,
+            "dealer_id": 1966,
+            "supplier": "2345232d3425f2235",
+            "index": "6",
+            "product": {
+			    "name": "РИСОВАРКА BECKERS"
+			    "description": "490*490*350 мм, 220В, 1.95 кВт, 9 кг, температура max +160°C"
+			    "article": "N-RIS8"
+			    "brand": "Beckers"
+			    "category": "БАРНОЕ ОБОРУДОВАНИЕ/БЛЕНДЕРЫ БАРНЫЕ"
+			    "country": "Япония"
+			    "length": "490"
+			    "width": "490"
+			    "height": "340"
+			    "power": "1.99"
+			    "voltage": "220"
+			    "price_catalog": "198.86"
+			    "price_dealer": "178.97"
+			    "currency": "EUR"
+			    "availability": "16"
+			    "delivery_time": "3"
+			    "files": "https://picture1.jpg https://picture2.png https://picture3.jpeg https://picture4.gif"
+			    "params": {
+			      "Парам_1": "111",
+			      "Парам_2": "",
+			      "Парам_3": "",
+			      "Парам_4": "222",
+			      "Парам_5": ""
+			    }
+			}
+        }
+    }
+}
+ ответ success:
+ {
+    'response': {
+        'success': 'true',
+        'results': {
+            "index": 6,
+            "status": "update",
+            "errors": []
+        }
+    }
+};
+ответ error:
+{
+	"response":
+	    {
+	        "success":"true/false",
+	        "error_code": "", // код ошибки (если есть)
+	        "error_message": "", // описание ошибки (если есть ошибка)
+	    }
+}
+
+---------------------------------------------------------------------------------------
+/supplier/products/import/validate/article/
+
+паттерн валидации:
+[
+    'request' => [
+        'ruleset' => ['required','not_empty'], // ключ обязателен (required),не должен быть пустым (not_empty)
+        'children'=>[
+            'apikey' => [
+                'type' => 'string', // значение поля должно быть строковым
+                'ruleset' => ['required','not_empty','autorize_key'] // ключ обязателен (required),не должен быть пустым (not_empty),поле является ключом авторизации (autorize_key)
+            ],
+            'user_id' => [
+                'type' => 'integer', // значение поля должно быть числовым
+                'ruleset' => ['required','not_empty'] // ключ обязателен (required),не должен быть пустым (not_empty)
+            ],
+            'dealer_id' => [
+                'type' => 'integer', // значение поля должно быть числовым
+                'ruleset' => ['required','not_empty'] // ключ обязателен (required),не должен быть пустым (not_empty)
+            ],
+            'supplier_id' => [
+                'type' => 'string', // значение поля должно быть строковым
+                'ruleset' => ['required','not_empty'] // ключ обязателен (required),не должен быть пустым (not_empty)
+            ],
+            'article' => [
+                'type' => 'string', // значение поля должно быть строковым
+                'ruleset' => ['required','not_empty'] // ключ обязателен (required),не должен быть пустым (not_empty)
+            ],
+            'index' => [
+                'type' => 'integer', // значение поля должно быть числовым
+                'ruleset' => ['required','not_empty'] // ключ обязателен (required),не должен быть пустым (not_empty)
+            ],
+            'col' => [
+                'ruleset' => ['required','not_empty'] // ключ обязателен (required),не должен быть пустым (not_empty)
+                'type' => 'array', // значение поля должно быть массивом
+            ]
+        ]
+    ]
+];
+
+
+апрос:
+{
+    "url": "http://172.17.0.1:8081/v1/supplier/products/import/validate/row/",
+    "sendData": {
+        "request": {
+            "apikey": "uvkz5zZljZoHTfNOpUigvALRhnRZki9y",
+            "user_id": 5607,
+            "dealer_id": 1966,
+            "supplier": "2345232d3425f2235",
+            "index": "6",
+			"col": [
+                "N-TSV2",
+                "N-GN111/TN",
+                "N-B705",
+                "N-HKN-BLW2",
+                "HKN-PE34R1",
+                "1",
+                "N-RIS8",
+                "136021",
+                "14",
+                "HKN-SR56M",
+                "TCG 3627 RR",
+                "HKN-PE34Rк",
+                "RIS8",
+                "HKN-PE34R4",
+                "TSV2",
+                "GN111/TN",
+                "B705",
+                "HKN-BLW2",
+                "ACB5325B W",
+                "B 7540 AS",
+                "DM105-S 1103408D",
+                "ORACGB ",
+                "Ф3ШЖЭ 21501к",
+                "KСХ-111/70",
+                "TA09/1M-710",
+                "ПКА10-1/1ПМ2 110000019449",
+                "ЭП-4ЖШ",
+                "HBB255-CE",
+                "HKN-IMF17",
+                "THKN-SR56M",
+                "TRIS8",
+                "THKN-PE34R",
+                "HKN-PE34RKOT",
+                "KOTIK",
+                "KOTIK2",
+                "ACB5325B W333",
+                "ACB5325B W444",
+                "2",
+                "3",
+                "4",
+                "5",
+                "6",
+                "7",
+                "8",
+                "9",
+                "10",
+                "11",
+                "12",
+                "13",
+                "101010",
+                "HKN-PE34R",
+                "HKN-PE34R",
+                "TTCG 3627 RR",
+                "HKN-P34sE34R4",
+                "HKN-PE34R!",
+                "N-ACB5325B W",
+                "HKN-PE34RSOS"
+            ]
+            
+        }
+    }
+}
+
+ответ success: {
+    'response': {
+        'success':   'true',
+        'duplicates':   [
+            "50": {
+                "article": 'HKN-IMF17'
+            },
+            "51" => {
+                "article": 'HKN-IMF17'
+            },
+        ]
+    }
+};
+
+ответ error:
+{
+	"response": {
+	        "success":"true/false",
+	        "error_code": "", // код ошибки (если есть)
+	        "error_message": "", // описание ошибки (если есть ошибка)
+	    }
+}
+
+---------------------------------------------------------------------------------------
+/supplier/products/import/validate/execute/
+паттерн валидации:
+ - аналогичен /supplier/products/import/validate/
+
+запрос:
+ - аналогичен /supplier/products/import/validate/
+
+ ответ success:
+ {
+    'response': {
+        'success'       =>   'true',
+        'created'       =>   99,
+        'updated'       =>   55,
+        'deactivated'   =>   6,
+    }
+};
+ответ error:
+{
+	"response": {
+	        "success":"true/false",
+	        "error_code": "", // код ошибки (если есть)
+	        "error_message": "", // описание ошибки (если есть ошибка)
+	    }
+}
+
+---------------------------------------------------------------------------------------
+
+формат данных товара:
+
+[
+    "name" => "РИСОВАРКА BECKERS"
+    "description" => "490*490*350 мм, 220В, 1.95 кВт, 9 кг, температура max +160°C"
+    "article" => "N-RIS8"
+    "brand" => "Beckers"
+    "category" => "БАРНОЕ ОБОРУДОВАНИЕ/БЛЕНДЕРЫ БАРНЫЕ"
+    "country" => "Япония"
+    "length" => "490"
+    "width" => "490"
+    "height" => "340"
+    "power" => "1.99"
+    "voltage" => "220"
+    "price_catalog" => "198.86"
+    "price_dealer" => "178.97"
+    "currency" => "EUR"
+    "availability" => "16"
+    "delivery_time" => "3"
+    "files" => "https://picture1.jpg https://picture2.png https://picture3.jpeg https://picture4.gif"
+    "params" => array:5 [
+      "Парам_1" => "111"
+      "Парам_2" => ""
+      "Парам_3" => ""
+      "Парам_4" => "222"
+      "Парам_5" => ""
+    ]
+];
+
+
+[
+    'request' => [
+        'ruleset' => ['required','not_empty'], // ключ обязателен (required),не должен быть пустым (not_empty)
+        'children'=>[
+            'apikey' => [
+                'type' => 'string', // значение поля должно быть строковым
+                'ruleset' => ['required','not_empty','autorize_key'] // ключ обязателен (required),не должен быть пустым (not_empty),поле является ключом авторизации (autorize_key)
+            ],
+            'supplier' => [
+                'type' => 'string', // значение поля должно быть строковым
+                'ruleset' => ['required','not_empty'] // ключ обязателен (required),не должен быть пустым (not_empty)
+            ],
+            'products' => [
+                'ruleset' => ['required'], // ключ обязателен (required)
+                'type' => 'array', // значение поля должно быть массивом
+                        'children'=> [
+				    	[
+				        "name" => [
+				            "ruleset" => [
+				                0 => "required" // ключ обязателен (required)
+				            ]
+				        ],
+				        "description" => [
+				            "ruleset" => [
+				                0 => "required" // ключ обязателен (required)
+				            ]
+				        ],
+				        "article" => [
+				            "ruleset" => [
+				                0 => "required" // ключ обязателен (required)
+				            ]
+				        ],
+				        "brand" => [
+				            "ruleset" => [
+				                0 => "required" // ключ обязателен (required)
+				        ],
+				        "category" => [
+				            "ruleset" => [
+				                0 => "required" // ключ обязателен (required)
+				            ]
+				        ]
+				    ]
+				]
+            ]
+        ]
+    ]
+];
