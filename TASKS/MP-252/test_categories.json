@@ -1,0 +1,85 @@
+[{
+    "_id": "682dcce1c1abe76f10047523",
+    "supplier_id": "681a012468516bc3f3f45088",
+    "active": 1,
+    "sort": 100, 
+    "name": "Барное оборудование",
+    "code": "barnoe-oborudovanie",
+    "parent_id": "0",
+    "parents": "/0/682dcce1c1abe76f10047523/",
+    "sync_key": "/Барное оборудование/",
+    "level": 1 
+},
+{
+    "_id": "682dcce1c1abe76f1845168468",
+    "supplier_id": "681a012468516bc3f3f45088",
+    "active": 1,
+    "sort": 100, 
+    "name": "Блендеры барные",
+    "code": "blendery-barnye",
+    "parent_id": "682dcce1c1abe76f10047523",
+    "parents": "/0/682dcce1c1abe76f10047523/682dcce1c1abe76f1845168468/",
+    "sync_key": "/Барное оборудование/Блендеры барные/",
+    "level": 2 
+},
+{
+    "_id": "451faw465461846546546433",
+    "supplier_id": "681a012468516bc3f3f45088",
+    "active": 1,
+    "sort": 100, 
+    "name": "Сокоохладитель",
+    "code": "Sokoohladitel",
+    "parent_id": "682dcce1c1abe76f10047523",
+    "parents": "/0/682dcce1c1abe76f10047523/451faw465461846546546433/",
+    "sync_key": "/Барное оборудование/Сокоохладитель/",
+    "level": 2 
+},
+{
+    "_id": "45wfa5f165465163565368",
+    "supplier_id": "681a012468516bc3f3f45088",
+    "active": 1,
+    "sort": 100, 
+    "name": "Льдогенератор",
+    "code": "L'dogenerator",
+    "parent_id": "682dcce1c1abe76f10047523",
+    "parents": "/0/682dcce1c1abe76f10047523/45wfa5f165465163565368/",
+    "sync_key": "/Барное оборудование/Льдогенератор/",
+    "level": 2 
+},
+{
+    "_id": "6e8f46e84f68s4e68f46s84e68",
+    "supplier_id": "681a012468516bc3f3f45088",
+    "active": 1,
+    "sort": 100, 
+    "name": "Кофейное оборудование",
+    "code": "Kofejnoe-oborudovanie",
+    "parent_id": "0",
+    "parents": "/0/6e8f46e84f68s4e68f46s84e68/",
+    "sync_key": "/Кофейное оборудование/",
+    "level": 1 
+},
+{
+    "_id": "84wf6e85f46s85e1f6565ef",
+    "supplier_id": "681a012468516bc3f3f45088",
+    "active": 1,
+    "sort": 100, 
+    "name": "Кофемолки",
+    "code": "Kofemolki",
+    "parent_id": "6e8f46e84f68s4e68f46s84e68",
+    "parents": "/0/6e8f46e84f68s4e68f46s84e68/84wf6e85f46s85e1f6565ef/",
+    "sync_key": "/Кофейное оборудование/Кофемолки/",
+    "level": 2 
+},
+{
+    "_id": "684wf68se46f8s6e5f46s84f6846",
+    "supplier_id": "681a012468516bc3f3f45088",
+    "active": 1,
+    "sort": 100, 
+    "name": "Ручные кофемолки",
+    "code": "Ruchnye-kofemolki",
+    "parent_id": "84wf6e85f46s85e1f6565ef",
+    "parents": "/0/6e8f46e84f68s4e68f46s84e68/84wf6e85f46s85e1f6565ef/684wf68se46f8s6e5f46s84f6846/",
+    "sync_key": "/Кофейное оборудование/Кофемолки/Ручные кофемолки/",
+    "level": 3 
+}
+]
