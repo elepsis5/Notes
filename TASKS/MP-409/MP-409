@@ -1,0 +1,132 @@
+MP-409
+
+
+1. роуты для accept/reject equipcad:
+
+moderator/products/equipcad/{id}/accept/ // товар принят без измнений
+	- паттерн валидации:
+	        $validationPattern = [
+            'request' => [
+                'ruleset' => ['required', 'not_empty'],
+                'children' => [
+                    'apikey' => [
+                        'type' => 'string',
+                        'ruleset' => ['required', 'not_empty', 'autorize_key']
+                    ]
+                ]
+            ]
+        ];
+moderator/products/equipcad/{id}/reject/ // товар отклонен
+	- паттерн валидации:
+	        $validationPattern = [
+            'request' => [
+                'ruleset' => ['required', 'not_empty'],
+                'children' => [
+                    'apikey' => [
+                        'type' => 'string',
+                        'ruleset' => ['required', 'not_empty', 'autorize_key']
+                    ],
+                    'comment' => [
+                        'type' => 'string',
+                        'ruleset' => ['required', 'not_empty'],
+                        'max_length' => 255,
+                    ],
+                ]
+            ]
+        ];
+
+2. доработать метод edit() (app/Http/Controllers/Cards/Moderator/ProductsController.php:505)
+
+moderator/products/{id}/edit/ // товар принят с изменениями
+	- паттерн валидации:
+        $validationPattern = [
+            'request' => [
+                'ruleset' => ['required', 'not_empty'],
+                'children' => [
+                    'apikey' => [
+                        'type' => 'string',
+                        'ruleset' => ['required', 'not_empty', 'autorize_key']
+                    ],
+                    'moderation_status' => [
+                        'type' => 'string',
+                        'one_of' => ['on_moderation', 'accepted', 'rejected'],
+                        'ruleset' => ['required', 'not_empty']
+                    ],
+                    'comment' => [
+                        'type' => 'string'
+                    ],
+                    'product' => [
+                        'ruleset' => ['required', 'not_empty'],
+                        'children' => [
+                            'active' => [
+                                'type' => 'integer',
+                                'ruleset' => ['required', 'not_empty']
+                            ],
+                            'name' => [
+                                'type' => 'string',
+                                'ruleset' => ['required', 'not_empty']
+                            ],
+                            'description' => [
+                                'type' => 'string',
+                                'ruleset' => ['required', 'not_empty']
+                            ],
+                            'brand' => [
+                                'type' => 'string',
+                                'ruleset' => ['required', 'not_empty']
+                            ],
+                            'category' => [
+                                'type' => 'string',
+                                'ruleset' => ['required', 'not_empty']
+                            ],
+                            'equipcad' => [
+                                'type' => 'array',
+                                'ruleset' => ['required', 'not_empty'] // добавляется новый ключ
+                            ]
+                        ]
+                    ]
+                ]
+            ]
+        ];
+
+3. метод checkEquipCadFields() проверяет были ли изменения в контексте equipcad. Если были, то производим запись.
+!!!уточнить!!! если модерация открывается в момент внесения изменений поставщиком, то на момент модерации текущая 'moderation' всегда будет в статусе 'on_moderation'.
+
+
+
+
+
+
+$data = [
+    ....
+];
+
+$message= '';
+
+$moderation = new ModerationEquipCad('_id');
+
+$moderation->setChangesFromModerator($data, $message);
+
+
+класс ModerationEquipCad{
+
+    - инициализируется по id товара
+    - модель товара
+    - user_id из контейнера
+    - supplier_id из контейнера
+
+    - минимальное количество зависимостей, ДТО, интерфейсов и т.д.
+
+
+    методы:
+        - setChangesFromModerator() - пришли изменнеия от модератора, принимает набор данных (product.equipcad.data) и message, логика:
+            - если товар на модерации
+                - updateCurrentModeartion()
+            - (иначе) если товар промодераирован
+                - archiveModeartion()
+                - createModeartion()
+        - setChangesFromSupplier() - пришли изменения от поставщика, принимает набор данных (product.equipcad.data)
+            - ....
+
+        - accepteModeartion() - 
+        ...
+}

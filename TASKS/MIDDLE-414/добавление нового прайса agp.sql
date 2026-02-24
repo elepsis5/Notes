@@ -1,0 +1,2 @@
+INSERT INTO pr_price_list (`NAME`,`CODE`,`TYPE`,`RELATE_TO_RUB`) VALUES ('Azerbaijan Gross Price','agp','BASE',35);
+INSERT INTO pr_price_list (`NAME`,`CODE`,`TYPE`) VALUES ('Azerbaijan Gross Price в рублях','agprub','RUB');

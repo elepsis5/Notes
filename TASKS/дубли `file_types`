@@ -1,0 +1,16 @@
+table = file_types;
+-------------------------------------------------------------
+DELETE FROM `translate` WHERE ID = 53953;
+DELETE FROM `translate` WHERE ID = 53954;
+DELETE FROM `translate` WHERE ID = 1062027;
+DELETE FROM `translate` WHERE ID = 1062029;
+DELETE FROM `translate` WHERE ID = 1062030;
+DELETE FROM `translate` WHERE ID = 1062031;
+DELETE FROM `translate` WHERE ID = 1062032;
+DELETE FROM `translate` WHERE ID = 1062033;
+DELETE FROM `translate` WHERE ID = 1062034;
+DELETE FROM `translate` WHERE ID = 1062035;
+
+table = pr_moderated_objects_statuses;
+-------------------------------------------------------------
+DELETE FROM `translate` WHERE ID = 802232;

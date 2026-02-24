@@ -1,0 +1,4 @@
+DELETE FROM `translate` WHERE ID = 802236;
+DELETE FROM `translate` WHERE ID = 802235;
+DELETE FROM `translate` WHERE ID = 802234;
+DELETE FROM `translate` WHERE ID = 802233;
